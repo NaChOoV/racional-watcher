@@ -12,6 +12,27 @@ A TypeScript-based stock monitoring service that tracks portfolio positions from
 - **Database Integration**: SQLite database with Drizzle ORM for data persistence
 - **Cron Job Scheduling**: Automated monitoring with configurable intervals
 
+## ⚡ Quick Start
+
+```bash
+# Clone and install
+git clone https://github.com/yourusername/racional-watcher.git
+cd racional-watcher
+bun install
+
+# Set up your .env file (see Installation section for details)
+cp .env.example .env  # Edit with your configuration
+
+# Run database migrations
+bun migration:generate
+
+# Start in development mode
+bun dev
+
+# Or start in production mode
+bun start
+```
+
 ## 🛠️ Tech Stack
 
 - **Runtime**: [Bun](https://bun.sh/) - Fast JavaScript runtime
@@ -58,19 +79,42 @@ A TypeScript-based stock monitoring service that tracks portfolio positions from
 
 4. **Run database migrations**:
    ```bash
+   bun migration:generate
+   ```
+
+5. **Start the application**:
+   ```bash
+   # Development mode (with hot reload)
+   bun dev
+   
+   # Production mode
+   bun start
+   ```
+   NOTIFICATION_USERNAME=your_notification_username
+   NOTIFICATION_PASSWORD=your_notification_password
+   BOT_TOKEN=your_telegram_bot_token
+   
+   # Timezone Configuration
+   TIME_ZONE=GMT-3
+   ```
+
+4. **Run database migrations**:
+   ```bash
    bun run migration:generate
    ```
 
 ## 🚦 Usage
 
 ### Development Mode
+Run the application with hot reload for development:
 ```bash
-bun run run:dev
+bun dev
 ```
 
 ### Production Mode
+Run the application in production:
 ```bash
-bun main.ts
+bun start
 ```
 
 ### Running Tests
@@ -79,7 +123,13 @@ bun main.ts
 bun test
 
 # Run tests in watch mode
-bun run test:watch
+bun test:watch
+```
+
+### Database Operations
+```bash
+# Generate database migrations
+bun migration:generate
 ```
 
 ## 📊 How It Works
