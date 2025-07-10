@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, afterEach, spyOn, type Mock } from 'bun:test';
-import WatcherService from '../watchet.service';
+import WatcherService from '../watcher.service';
 import type StockService from '../stock.service';
 import type UserService from '../user.service';
 import type UserRepository from '../../repository/user.repository';

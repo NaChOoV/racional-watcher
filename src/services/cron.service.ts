@@ -2,7 +2,7 @@ import { CronJob } from 'cron';
 import { sleep } from 'bun';
 import { getSleepSeconds } from '../utils/sleep-time';
 import EnvConfig from '../config/enviroments';
-import type WatcherService from './watchet.service';
+import type WatcherService from './watcher.service';
 import type UserService from './user.service';
 
 class CronJobService {

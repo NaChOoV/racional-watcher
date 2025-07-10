@@ -6,7 +6,7 @@ import NotificationService from './services/notification.service';
 import { RacionalService } from './services/racional.service';
 import StockService from './services/stock.service';
 import UserService from './services/user.service';
-import WatcherService from './services/watchet.service';
+import WatcherService from './services/watcher.service';
 
 const racionalService = new RacionalService();
 
