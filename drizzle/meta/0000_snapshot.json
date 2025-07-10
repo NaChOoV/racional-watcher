@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "6dbd727f-cc21-471e-9a8d-d4d0db8051b6",
+  "id": "633cade3-b9a7-465a-b5ed-13839ebb49c1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "stock": {
@@ -18,7 +18,7 @@
           "name": "user_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "asset_id": {
@@ -32,8 +32,9 @@
           "name": "ranges",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'[{\"value\":10,\"in\":false},{\"value\":9,\"in\":false},{\"value\":8,\"in\":false},{\"value\":7,\"in\":false},{\"value\":6,\"in\":false},{\"value\":5,\"in\":false},{\"value\":4,\"in\":false},{\"value\":3,\"in\":false},{\"value\":2,\"in\":false},{\"value\":1,\"in\":false},{\"value\":0.5,\"in\":true},{\"value\":-0.5,\"in\":true},{\"value\":-1,\"in\":false},{\"value\":-2,\"in\":false},{\"value\":-3,\"in\":false},{\"value\":-4,\"in\":false},{\"value\":-5,\"in\":false},{\"value\":-6,\"in\":false},{\"value\":-7,\"in\":false},{\"value\":-8,\"in\":false},{\"value\":-9,\"in\":false},{\"value\":-10,\"in\":false}]'"
         }
       },
       "indexes": {
@@ -96,6 +97,14 @@
           "notNull": false,
           "autoincrement": false,
           "default": true
+        },
+        "error": {
+          "name": "error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'null'"
         }
       },
       "indexes": {

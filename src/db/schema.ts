@@ -1,6 +1,30 @@
 import { int, sqliteTable, text, integer, unique } from 'drizzle-orm/sqlite-core';
-import { sql, type InferSelectModel } from 'drizzle-orm';
-import { DEFAULT_STOCK_RANGE } from '../repository/stock.repository';
+import { type InferSelectModel } from 'drizzle-orm';
+
+export const DEFAULT_STOCK_RANGE: StockRange[] = [
+    { value: 10, in: false },
+    { value: 9, in: false },
+    { value: 8, in: false },
+    { value: 7, in: false },
+    { value: 6, in: false },
+    { value: 5, in: false },
+    { value: 4, in: false },
+    { value: 3, in: false },
+    { value: 2, in: false },
+    { value: 1, in: false },
+    { value: 0.5, in: true },
+    { value: -0.5, in: true },
+    { value: -1, in: false },
+    { value: -2, in: false },
+    { value: -3, in: false },
+    { value: -4, in: false },
+    { value: -5, in: false },
+    { value: -6, in: false },
+    { value: -7, in: false },
+    { value: -8, in: false },
+    { value: -9, in: false },
+    { value: -10, in: false },
+];
 
 export const user = sqliteTable(
     'user',
@@ -22,7 +46,10 @@ export const stock = sqliteTable(
         id: int().primaryKey({ autoIncrement: true }),
         userId: integer('user_id').notNull(),
         assetId: text('asset_id').notNull(),
-        ranges: text('ranges', { mode: 'json' }).$type<StockRange[]>().notNull(),
+        ranges: text('ranges', { mode: 'json' })
+            .$type<StockRange[]>()
+            .notNull()
+            .default(DEFAULT_STOCK_RANGE),
     },
     (t) => [unique().on(t.userId, t.assetId)]
 );

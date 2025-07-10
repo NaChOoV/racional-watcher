@@ -1,31 +1,6 @@
 import { and, eq, inArray, notInArray } from 'drizzle-orm';
 import { db } from '../db/database';
-import { stock, type Stock, type StockRange } from '../db/schema';
-
-export const DEFAULT_STOCK_RANGE: StockRange[] = [
-    { value: 10, in: false },
-    { value: 9, in: false },
-    { value: 8, in: false },
-    { value: 7, in: false },
-    { value: 6, in: false },
-    { value: 5, in: false },
-    { value: 4, in: false },
-    { value: 3, in: false },
-    { value: 2, in: false },
-    { value: 1, in: false },
-    { value: 0.5, in: true },
-    { value: -0.5, in: true },
-    { value: -1, in: false },
-    { value: -2, in: false },
-    { value: -3, in: false },
-    { value: -4, in: false },
-    { value: -5, in: false },
-    { value: -6, in: false },
-    { value: -7, in: false },
-    { value: -8, in: false },
-    { value: -9, in: false },
-    { value: -10, in: false },
-];
+import { DEFAULT_STOCK_RANGE, stock, type Stock, type StockRange } from '../db/schema';
 
 class StockRepository {
     private readonly client: typeof db;

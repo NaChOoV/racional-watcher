@@ -12,7 +12,7 @@ const db = drizzle({
 
 const initMigrations = async () => {
     await migrate(db, { migrationsFolder: './drizzle' });
-    console.log('Success Database Migration...');
+    console.log('[DrizzleORM] Success Database Migration...');
 };
 
 export { db, initMigrations };

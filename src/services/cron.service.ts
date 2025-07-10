@@ -24,8 +24,7 @@ class CronJobService {
     }
 
     private async checkUserStocks() {
-        //await this.checkSleepTime('checkUserStocks');
-        console.log('[CronJobService] Checking user stocks...');
+        await this.checkSleepTime('checkUserStocks');
         try {
             await this.watcherService.checkStocks();
         } catch (error) {
