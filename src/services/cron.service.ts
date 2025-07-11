@@ -39,9 +39,8 @@ class CronJobService {
         if (secondsLeft > 0) {
             const hours = (secondsLeft / 60 / 60).toFixed(1);
             console.log(`[CronJobService] Cron: ${name} paused for ${hours} hours.`);
+            await sleep(secondsLeft * 1000);
         }
-
-        await sleep(secondsLeft * 1000);
     }
 }
 
