@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach } from 'bun:test';
-import StockService from '../stock.service';
+import StockService, { Variation } from '../stock.service';
 import type { StockRange } from '../../db/schema';
 import type { Position } from '../../types/racional.types';
 
@@ -136,6 +136,112 @@ describe('StockService', () => {
                 const result = StockService.getVariation(position, baseTestRanges);
                 expect(result).toEqual(expectedResult);
             });
+        });
+    });
+
+    describe('getNewRangesByVariation', () => {
+        test('positive variation', () => {
+            const newStockRange1: StockRange[] = [
+                { value: 2, in: false },
+                { value: 1, in: true },
+                { value: 0.5, in: true },
+                { value: -0.5, in: false },
+                { value: -1, in: false },
+                { value: -2, in: false },
+            ];
+
+            const newStockRange2: StockRange[] = [
+                { value: 2, in: false },
+                { value: 1, in: true },
+                { value: 0.5, in: true },
+                { value: -0.5, in: false },
+                { value: -1, in: false },
+                { value: -2, in: false },
+            ];
+
+            const newStockRange3: StockRange[] = [
+                { value: 2, in: true },
+                { value: 1, in: false },
+                { value: 0.5, in: false },
+                { value: -0.5, in: false },
+                { value: -1, in: false },
+                { value: -2, in: false },
+            ];
+
+            const result1 = StockService.getVariationTypeByStockRange(
+                baseTestRanges,
+                newStockRange1
+            );
+            const result2 = StockService.getVariationTypeByStockRange(
+                baseTestRanges,
+                newStockRange2
+            );
+            const result3 = StockService.getVariationTypeByStockRange(
+                baseTestRanges,
+                newStockRange3
+            );
+            expect(result1).toEqual(Variation.INCREASE);
+            expect(result2).toEqual(Variation.INCREASE);
+            expect(result3).toEqual(Variation.INCREASE);
+        });
+
+        test('negative variation', () => {
+            const newStockRange1: StockRange[] = [
+                { value: 2, in: false },
+                { value: 1, in: false },
+                { value: 0.5, in: false },
+                { value: -0.5, in: true },
+                { value: -1, in: true },
+                { value: -2, in: false },
+            ];
+
+            const newStockRange2: StockRange[] = [
+                { value: 2, in: false },
+                { value: 1, in: false },
+                { value: 0.5, in: false },
+                { value: -0.5, in: false },
+                { value: -1, in: true },
+                { value: -2, in: true },
+            ];
+
+            const newStockRange3: StockRange[] = [
+                { value: 2, in: false },
+                { value: 1, in: false },
+                { value: 0.5, in: false },
+                { value: -0.5, in: false },
+                { value: -1, in: false },
+                { value: -2, in: true },
+            ];
+
+            const result1 = StockService.getVariationTypeByStockRange(
+                baseTestRanges,
+                newStockRange1
+            );
+            const result2 = StockService.getVariationTypeByStockRange(
+                baseTestRanges,
+                newStockRange2
+            );
+            const result3 = StockService.getVariationTypeByStockRange(
+                baseTestRanges,
+                newStockRange3
+            );
+            expect(result1).toEqual(Variation.DECREASE);
+            expect(result2).toEqual(Variation.DECREASE);
+            expect(result3).toEqual(Variation.DECREASE);
+        });
+
+        test('no variation', () => {
+            const newStockRange: StockRange[] = [
+                { value: 2, in: false },
+                { value: 1, in: false },
+                { value: 0.5, in: true },
+                { value: -0.5, in: true },
+                { value: -1, in: false },
+                { value: -2, in: false },
+            ];
+
+            const result = StockService.getVariationTypeByStockRange(baseTestRanges, newStockRange);
+            expect(result).toBeUndefined();
         });
     });
 });

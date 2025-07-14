@@ -20,8 +20,14 @@ export type VariationResult = {
     assetId: string;
     newValue: number;
     variation: number;
+    variationType: Variation;
     newRanges: StockRange[];
 };
+
+export enum Variation {
+    INCREASE = 'INCREASE',
+    DECREASE = 'DECREASE',
+}
 
 class StockService {
     private readonly racionalService: RacionalService;
@@ -91,13 +97,18 @@ class StockService {
             const result = StockService.getVariation(stock, ranges);
 
             if (result) {
-                rangesUpdate.push({
-                    userId,
-                    assetId: stock.assetId,
-                    newValue: stock.unrealizedPL,
-                    variation: stock.unrealizedPLPercent,
-                    newRanges: result,
-                });
+                const variationType = StockService.getVariationTypeByStockRange(ranges, result);
+
+                if (variationType) {
+                    rangesUpdate.push({
+                        userId,
+                        assetId: stock.assetId,
+                        newValue: stock.unrealizedPL,
+                        variation: stock.unrealizedPLPercent,
+                        variationType,
+                        newRanges: result,
+                    });
+                }
             }
         });
 
@@ -231,6 +242,62 @@ class StockService {
         }
 
         return newRanges;
+    }
+
+    static getVariationTypeByStockRange(
+        stockRange: StockRange[],
+        newStockRange: StockRange[]
+    ): Variation | undefined {
+        // Find the active ranges (where in = true) in both old and new configurations
+        const oldActiveRanges = stockRange.filter((range) => range.in);
+        const newActiveRanges = newStockRange.filter((range) => range.in);
+
+        // If no change in active ranges, return undefined
+        if (
+            oldActiveRanges.length === newActiveRanges.length &&
+            oldActiveRanges.every((oldRange) =>
+                newActiveRanges.some(
+                    (newRange) => newRange.value === oldRange.value && newRange.in === oldRange.in
+                )
+            )
+        ) {
+            return undefined;
+        }
+
+        // Calculate the average value of active ranges for comparison
+        const getAverageActiveValue = (ranges: StockRange[]): number => {
+            if (ranges.length === 0) return 0;
+            return ranges.reduce((sum, range) => sum + range.value, 0) / ranges.length;
+        };
+
+        const oldAverage = getAverageActiveValue(oldActiveRanges);
+        const newAverage = getAverageActiveValue(newActiveRanges);
+
+        // If new average is higher than old average, it's an increase
+        if (newAverage > oldAverage) {
+            return Variation.INCREASE;
+        }
+
+        // If new average is lower than old average, it's a decrease
+        if (newAverage < oldAverage) {
+            return Variation.DECREASE;
+        }
+
+        // If averages are equal, check if we moved towards more positive ranges
+        const oldMaxValue =
+            oldActiveRanges.length > 0 ? Math.max(...oldActiveRanges.map((r) => r.value)) : 0;
+        const newMaxValue =
+            newActiveRanges.length > 0 ? Math.max(...newActiveRanges.map((r) => r.value)) : 0;
+
+        if (newMaxValue > oldMaxValue) {
+            return Variation.INCREASE;
+        }
+
+        if (newMaxValue < oldMaxValue) {
+            return Variation.DECREASE;
+        }
+
+        return undefined;
     }
 }
 

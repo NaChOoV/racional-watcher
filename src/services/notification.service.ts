@@ -1,7 +1,7 @@
 import type { AxiosInstance } from 'axios';
 import EnvConfig from '../config/enviroments';
 import axios from 'axios';
-import type { VariationResult } from './stock.service';
+import { Variation, type VariationResult } from './stock.service';
 
 class NotificationService {
     private readonly httpService: AxiosInstance;
@@ -21,7 +21,7 @@ class NotificationService {
     }
 
     public async notifyVariation(chatId: string, variation: VariationResult): Promise<void> {
-        const variationIcon = variation.variation > 0 ? '🔺' : '🔻';
+        const variationIcon = variation.variationType > Variation.INCREASE ? '🔺' : '🔻';
         const variationPercentage = variation.variation.toFixed(2);
         const message = `${variation.assetId} ${variationIcon} ${variationPercentage}%`;
 
